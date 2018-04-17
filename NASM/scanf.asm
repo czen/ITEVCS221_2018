@@ -8,10 +8,10 @@ SECTION .data
     integer2: times 4 db 0 ;
 SECTION .text
    global main 
-   extern _scanf 
-   extern _printf     
+   extern scanf 
+   extern printf     
 
-_main:
+main:
 
    push ebx ; save registers
    push ecx
