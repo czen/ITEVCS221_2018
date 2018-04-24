@@ -52,100 +52,100 @@
     52 00000000 03000000                a:	dd	3		; 32-bit variable a initialized to 3
     53 00000004 04000000                b:	dd	4		; 32-bit variable b initializes to 4
     54 00000008 25732C20613D25642C-     fmt:    db "%s, a=%d, b=%d, c=%d",10,0	; format string for printf
-    54 00000011 20623D25642C20633D-
-    54 0000001A 25640A00           
-    55                                  	
-    56                                  	section .bss 		; unitialized space
-    57 00000000 <res 00000004>          c:	resd	1		; reserve a 32-bit word
-    58                                  
-    59                                  	section .text		; instructions, code segment
-    60                                  	global	 main		; for gcc standard linking
-    61                                  main:				; label
-    62                                  	
-    63                                  lit5:				; c=5;
-    64 00000000 B805000000              	mov	eax,5	 	; 5 is a literal constant
-    65 00000005 A3[00000000]            	mov	[c],eax		; store into c
-    66                                  	pabc	"c=5  "		; invoke the print macro
-    66                              <1>  section .data
-    66 0000001E 633D35202000        <1> .str db %1,0
-    66                              <1>  section .text
-    66                              <1> 
-    66 0000000A FF35[00000000]      <1>  push dword [c]
-    66 00000010 FF35[04000000]      <1>  push dword [b]
-    66 00000016 FF35[00000000]      <1>  push dword [a]
-    66 0000001C 68[1E000000]        <1>  push dword .str
-    66 00000021 68[08000000]        <1>  push dword fmt
-    66 00000026 E8(00000000)        <1>  call printf
-    66 0000002B 83C414              <1>  add esp,20
-    67                                  	
-    68                                  addb:				; c=a+b;
-    69 0000002E A1[00000000]            	mov	eax,[a]	 	; load a
-    70 00000033 0305[04000000]          	add	eax,[b]		; add b
-    71 00000039 A3[00000000]            	mov	[c],eax		; store into c
-    72                                  	pabc	"c=a+b"		; invoke the print macro
-    72                              <1>  section .data
-    72 00000024 633D612B6200        <1> .str db %1,0
-    72                              <1>  section .text
+    55 00000011 20623D25642C20633D-
+    56 0000001A 25640A00           
+    57                                  	
+    58                                  	section .bss 		; unitialized space
+    59 00000000 <res 00000004>          c:	resd	1		; reserve a 32-bit word
+    60                                  
+    61                                  	section .text		; instructions, code segment
+    62                                  	global	 main		; for gcc standard linking
+    63                                  main:				; label
+    64                                  	
+    65                                  lit5:				; c=5;
+    66 00000000 B805000000              	mov	eax,5	 	; 5 is a literal constant
+    67 00000005 A3[00000000]            	mov	[c],eax		; store into c
+    68                                  	pabc	"c=5  "		; invoke the print macro
+    69                              <1>  section .data
+    70 0000001E 633D35202000        <1> .str db %1,0
+    71                              <1>  section .text
     72                              <1> 
-    72 0000003E FF35[00000000]      <1>  push dword [c]
-    72 00000044 FF35[04000000]      <1>  push dword [b]
-    72 0000004A FF35[00000000]      <1>  push dword [a]
-    72 00000050 68[24000000]        <1>  push dword .str
-    72 00000055 68[08000000]        <1>  push dword fmt
-    72 0000005A E8(00000000)        <1>  call printf
-    72 0000005F 83C414              <1>  add esp,20
-    73                                  	
-    74                                  subb:				; c=a-b;
-    75 00000062 A1[00000000]            	mov	eax,[a]	 	; load a
-    76 00000067 2B05[04000000]          	sub	eax,[b]		; subtract b
-    77 0000006D A3[00000000]            	mov	[c],eax		; store into c
-    78                                  	pabc	"c=a-b"		; invoke the print macro
-    78                              <1>  section .data
-    78 0000002A 633D612D6200        <1> .str db %1,0
-    78                              <1>  section .text
-    78                              <1> 
-    78 00000072 FF35[00000000]      <1>  push dword [c]
-    78 00000078 FF35[04000000]      <1>  push dword [b]
-    78 0000007E FF35[00000000]      <1>  push dword [a]
-    78 00000084 68[2A000000]        <1>  push dword .str
-    78 00000089 68[08000000]        <1>  push dword fmt
-    78 0000008E E8(00000000)        <1>  call printf
-    78 00000093 83C414              <1>  add esp,20
-    79                                  	
-    80                                  mulb:				; c=a*b;
-    81 00000096 A1[00000000]            	mov	eax,[a]	 	; load a (must be eax for multiply)
-    82 0000009B F72D[04000000]          	imul	dword [b]	; signed integer multiply by b
-    83 000000A1 A3[00000000]            	mov	[c],eax		; store bottom half of product into c
-    84                                  	pabc	"c=a*b"		; invoke the print macro
-    84                              <1>  section .data
-    84 00000030 633D612A6200        <1> .str db %1,0
-    84                              <1>  section .text
-    84                              <1> 
-    84 000000A6 FF35[00000000]      <1>  push dword [c]
-    84 000000AC FF35[04000000]      <1>  push dword [b]
-    84 000000B2 FF35[00000000]      <1>  push dword [a]
-    84 000000B8 68[30000000]        <1>  push dword .str
-    84 000000BD 68[08000000]        <1>  push dword fmt
-    84 000000C2 E8(00000000)        <1>  call printf
-    84 000000C7 83C414              <1>  add esp,20
-    85                                  	
-    86                                  diva:				; c=c/a;
-    87 000000CA A1[00000000]            	mov	eax,[c]	 	; load c
-    88 000000CF BA00000000              	mov	edx,0		; load upper half of dividend with zero
-    89 000000D4 F73D[00000000]          	idiv	dword [a]	; divide double register edx eax by a
-    90 000000DA A3[00000000]            	mov	[c],eax		; store quotient into c
-    91                                  	pabc	"c=c/a"		; invoke the print macro
-    91                              <1>  section .data
-    91 00000036 633D632F6100        <1> .str db %1,0
-    91                              <1>  section .text
-    91                              <1> 
-    91 000000DF FF35[00000000]      <1>  push dword [c]
-    91 000000E5 FF35[04000000]      <1>  push dword [b]
-    91 000000EB FF35[00000000]      <1>  push dword [a]
-    91 000000F1 68[36000000]        <1>  push dword .str
-    91 000000F6 68[08000000]        <1>  push dword fmt
-    91 000000FB E8(00000000)        <1>  call printf
-    91 00000100 83C414              <1>  add esp,20
-    92                                  
-    93 00000103 B800000000                      mov     eax,0           ; exit code, 0=normal
-    94 00000108 C3                      	ret			; main return to operating system
+    73 0000000A FF35[00000000]      <1>  push dword [c]
+    74 00000010 FF35[04000000]      <1>  push dword [b]
+    75 00000016 FF35[00000000]      <1>  push dword [a]
+    76 0000001C 68[1E000000]        <1>  push dword .str
+    77 00000021 68[08000000]        <1>  push dword fmt
+    78 00000026 E8(00000000)        <1>  call printf
+    79 0000002B 83C414              <1>  add esp,20
+    80                                  	
+    81                                  addb:				; c=a+b;
+    82 0000002E A1[00000000]            	mov	eax,[a]	 	; load a
+    83 00000033 0305[04000000]          	add	eax,[b]		; add b
+    84 00000039 A3[00000000]            	mov	[c],eax		; store into c
+    85                                  	pabc	"c=a+b"		; invoke the print macro
+    86                              <1>  section .data
+    87 00000024 633D612B6200        <1> .str db %1,0
+    88                              <1>  section .text
+    89                              <1> 
+    90 0000003E FF35[00000000]      <1>  push dword [c]
+    91 00000044 FF35[04000000]      <1>  push dword [b]
+    92 0000004A FF35[00000000]      <1>  push dword [a]
+    93 00000050 68[24000000]        <1>  push dword .str
+    94 00000055 68[08000000]        <1>  push dword fmt
+    95 0000005A E8(00000000)        <1>  call printf
+    96 0000005F 83C414              <1>  add esp,20
+    97                                  	
+    98                                  subb:				; c=a-b;
+    99 00000062 A1[00000000]            	mov	eax,[a]	 	; load a
+   100 00000067 2B05[04000000]          	sub	eax,[b]		; subtract b
+   101 0000006D A3[00000000]            	mov	[c],eax		; store into c
+   102                                  	pabc	"c=a-b"		; invoke the print macro
+   103                              <1>  section .data
+   104 0000002A 633D612D6200        <1> .str db %1,0
+   105                              <1>  section .text
+   106                              <1> 
+   107 00000072 FF35[00000000]      <1>  push dword [c]
+   108 00000078 FF35[04000000]      <1>  push dword [b]
+   109 0000007E FF35[00000000]      <1>  push dword [a]
+   110 00000084 68[2A000000]        <1>  push dword .str
+   111 00000089 68[08000000]        <1>  push dword fmt
+   112 0000008E E8(00000000)        <1>  call printf
+   113 00000093 83C414              <1>  add esp,20
+   114                                  	
+   115                                  mulb:				; c=a*b;
+   116 00000096 A1[00000000]            	mov	eax,[a]	 	; load a (must be eax for multiply)
+   117 0000009B F72D[04000000]          	imul	dword [b]	; signed integer multiply by b
+   118 000000A1 A3[00000000]            	mov	[c],eax		; store bottom half of product into c
+   119                                  	pabc	"c=a*b"		; invoke the print macro
+   120                              <1>  section .data
+   121 00000030 633D612A6200        <1> .str db %1,0
+   122                              <1>  section .text
+   123                              <1> 
+   124 000000A6 FF35[00000000]      <1>  push dword [c]
+   125 000000AC FF35[04000000]      <1>  push dword [b]
+   126 000000B2 FF35[00000000]      <1>  push dword [a]
+   127 000000B8 68[30000000]        <1>  push dword .str
+   128 000000BD 68[08000000]        <1>  push dword fmt
+   129 000000C2 E8(00000000)        <1>  call printf
+   130 000000C7 83C414              <1>  add esp,20
+   131                                  	
+   132                                  diva:				; c=c/a;
+   133 000000CA A1[00000000]            	mov	eax,[c]	 	; load c
+   134 000000CF BA00000000              	mov	edx,0		; load upper half of dividend with zero
+   135 000000D4 F73D[00000000]          	idiv	dword [a]	; divide double register edx eax by a
+   136 000000DA A3[00000000]            	mov	[c],eax		; store quotient into c
+   137                                  	pabc	"c=c/a"		; invoke the print macro
+   138                              <1>  section .data
+   139 00000036 633D632F6100        <1> .str db %1,0
+   140                              <1>  section .text
+   141                              <1> 
+   142 000000DF FF35[00000000]      <1>  push dword [c]
+   143 000000E5 FF35[04000000]      <1>  push dword [b]
+   144 000000EB FF35[00000000]      <1>  push dword [a]
+   145 000000F1 68[36000000]        <1>  push dword .str
+   146 000000F6 68[08000000]        <1>  push dword fmt
+   147 000000FB E8(00000000)        <1>  call printf
+   148 00000100 83C414              <1>  add esp,20
+   149                                  
+   150 00000103 B800000000                      mov     eax,0           ; exit code, 0=normal
+   151 00000108 C3                      	ret			; main return to operating system
